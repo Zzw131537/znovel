@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "novel.cors",
+      "type": "com.zhouzw.znovel.core.config.CorsProperties",
+      "sourceType": "com.zhouzw.znovel.core.config.CorsProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "novel.cors.allow-origins",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.zhouzw.znovel.core.config.CorsProperties"
+    }
+  ],
+  "hints": []
+}

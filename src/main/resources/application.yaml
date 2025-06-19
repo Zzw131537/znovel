@@ -1,0 +1,278 @@
+#--------------------------通用配置-------------------------
+spring:
+  application:
+    # 应用名
+    name: novel
+  profiles:
+    # 激活特定配置
+    active: dev
+  jackson:
+    generator:
+      # JSON 序列化时，将所有 Number 类型的属性都转为 String 类型返回，避免前端数据精度丢失的问题。
+      # 由于 Javascript 标准规定所有数字处理都应使用 64 位 IEEE 754 浮点值完成，
+      # 结果是某些 64 位整数值无法准确表示（尾数只有 51 位宽）
+      write-numbers-as-strings: true
+  servlet:
+    multipart:
+      # 上传文件最大大小
+      max-file-size: 5MB
+  # 启用虚拟线程
+  threads:
+    virtual:
+      enabled: true
+  # 即使所有的用户线程（包括虚拟线程）都是守护线程的情况下，JVM 也不会立即退出，
+  # Spring Boot 官方建议在开启虚拟线程时设置该属性
+  main:
+    keep-alive: true
+
+  flyway:
+    # 是否开启 Flyway
+    enabled: false
+    # initialize the schema history table
+    baseline-on-migrate: true
+#    url: jdbc:mysql://localhost:3306/novel?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+#    user: root
+#    password: test123456
+
+server:
+  # 端口号
+  port: 8888
+
+--- #--------------------- Spring AI 配置----------------------
+spring:
+  ai:
+    openai:
+      api-key: sk-rrrupturhdofbiqzjutduuiceecpvfqlnvmgcyiaipbdikoi
+      base-url: https://api.siliconflow.cn
+      chat:
+        options:
+          model: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+
+
+
+--- #---------------------数据库配置---------------------------
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/zhouzw_novel?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+  # ShardingSphere-JDBC 配置
+  # 配置是 ShardingSphere-JDBC 中唯一与应用开发者交互的模块，
+  # 通过它可以快速清晰的理解 ShardingSphere-JDBC 所提供的功能。
+  shardingsphere:
+    # 是否开启分库分表
+    enabled: false
+
+--- #---------------------中间件配置---------------------------
+spring:
+  data:
+    # Redis 配置
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: 123456
+
+  # Elasticsearch 配置
+  elasticsearch:
+    # 是否开启 Elasticsearch 搜索引擎功能：true-开启 false-不开启
+    enabled: false
+    uris:
+      - https://my-deployment-ce7ca3.es.us-central1.gcp.cloud.es.io:9243
+    username: elastic
+    password: qTjgYVKSuExX6tWAsDuvuvwl
+    # 设置 ssl 的认证模式，如果该配置项为 none ，说明不需要认证，信任所有的 ssl 证书。
+  #    ssl:
+  #      verification-mode: none
+
+  # Spring AMQP 配置
+  amqp:
+    # 是否开启 Spring AMQP：true-开启 false-不开启
+    enabled: false
+  # RabbitMQ 配置
+  rabbitmq:
+    addresses: "amqp://guest:guest@47.106.243.172"
+    virtual-host: novel
+    template:
+      retry:
+        # 开启重试
+        enabled: true
+        # 最大重试次数
+        max-attempts: 3
+        # 第一次和第二次重试之间的持续时间
+        initial-interval: "3s"
+
+# XXL-JOB 配置
+xxl:
+  job:
+    # 是否开启 XXL-JOB：true-开启 false-不开启
+    enabled: false
+    admin:
+      ### 调度中心部署根地址 [选填]：如调度中心集群部署存在多个地址则用逗号分隔。执行器将会使用该地址进行"执行器心跳注册"和"任务结果回调"；为空则关闭自动注册；
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    executor:
+      ### 执行器AppName [选填]：执行器心跳注册分组依据；为空则关闭自动注册
+      appname: xxl-job-executor-novel
+      ### 执行器运行日志文件存储磁盘路径 [选填] ：需要对该路径拥有读写权限；为空则使用默认路径；
+      logpath: logs/xxl-job/jobhandler
+    ### xxl-job, access token
+    accessToken: 123
+
+--- #----------------------安全配置----------------------------
+#spring:
+#  # Spring Boot 应用管理和监控
+#  boot:
+#    admin:
+#      client:
+#        # 是否开启 Spring Boot Admin 客户端
+#        enabled: false
+#        # Spring Boot Admin 服务端注册地址
+#        url: http://localhost:8080
+#        # Spring Boot Admin 服务端认证用户名
+#        username: novel
+#        # Spring Boot Admin 服务端认证密码
+#        password: novel
+#        instance:
+#          metadata:
+#            # SBA Client
+#            user.name: ${spring.security.user.name}
+#            user.password: ${spring.security.user.password}
+#  security:
+#    user:
+#      name: ENDPOINT_ADMIN
+#      password: ENDPOINT_ADMIN
+#      roles: ENDPOINT_ADMIN
+
+# Actuator 端点管理
+#management:
+#  # 端点公开配置
+#  endpoints:
+#    # 通过 HTTP 公开的 Web 端点
+#    web:
+#      exposure:
+#        # 公开所有的 Web 端点
+#        include: "*"
+#  # 端点启用配置
+#  endpoint:
+#    logfile:
+#      # 启用返回日志文件内容的端点
+#      enabled: true
+#      # 外部日志文件路径
+#      external-file: logs/novel.log
+#  info:
+#    env:
+#      # 公开所有以 info. 开头的环境属性
+#      enabled: true
+#  health:
+#    rabbit:
+#      # 关闭 rabbitmq 的健康检查
+#      enabled: false
+#    elasticsearch:
+#      # 关闭 elasticsearch 的健康检查
+#      enabled: false
+#    mail:
+#      # 关闭 mail 的健康检查
+#      enabled: false
+#
+#--- #--------------------接口文档配置---------------------------
+#springdoc:
+#  api-docs:
+#    enabled: false
+#
+#--- #----------------------邮箱配置-----------------------------
+##邮箱服务器
+#spring:
+#  mail:
+#    host: smtp.163.com
+#    #发件人昵称
+#    nickname: xxyopen
+#    #邮箱账户
+#    username: xxx@163.com
+#    #邮箱第三方授权码
+#    password: xxx
+#    #编码类型
+#    default-encoding: UTF-8
+#    port: 465
+#    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+#            required: rue
+#          socketFactory:
+#            port: 465
+#            class: javax.net.ssl.SSLSocketFactory
+#            fallback: false
+
+#--- #----------------------Logbook配置-----------------------------
+#logbook:
+#  format:
+#    # 输出格式
+#    style: http
+#  obfuscate:
+#    headers:
+#      # 隐藏 Authorization 头信息
+#      - Authorization
+#    parameters:
+#      # 隐藏密码参数
+#      - password
+
+--- #---------------------自定义配置----------------------------
+novel:
+  # 跨域配置
+  cors:
+    # 允许跨域的域名
+    allow-origins:
+      - http://localhost:1024
+      - http://localhost:8080
+  # JWT 密钥
+  jwt:
+    secret: E66559580A1ADF48CDD928516062F12E
+  # XSS 过滤配置
+  xss:
+    # 过滤开关
+    enabled: true
+    # 排除链接
+    excludes:
+      - /system/notice/*
+  file:
+    # 文件上传配置
+    upload:
+      # 上传路径
+      path: /Users/xiongxiaoyang/upload
+
+
+--- #------------------- dev 特定配置---------------------------
+spring:
+  config:
+    activate:
+      on-profile: dev
+# 开启 SpringDoc 接口文档
+springdoc:
+  api-docs:
+    enabled: true
+# /env 端点显示属性值
+management:
+  endpoint:
+    env:
+      show-values: when_authorized
+
+--- #------------------- test 特定配置--------------------------
+spring:
+  config:
+    activate:
+      on-profile: test
+
+--- #-------------------- prod 特定配置-------------------------
+spring:
+  config:
+    activate:
+      on-profile: prod
+  data:
+    # Redis 配置
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password:
+
+
