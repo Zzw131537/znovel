@@ -29,7 +29,7 @@ public interface AuthStrategy {
                          String token) {
         if (!StringUtils.hasText(token)) {
             // token 为空
-            System.out.println("走到这里了");
+         //   System.out.println("走到这里了");
             throw new BusinessException(ErrorCodeEnum.USER_LOGIN_EXPIRED);
         }
         Long userId = jwtUtils.parseToken(token, SystemConfigConsts.NOVEL_FRONT_KEY);

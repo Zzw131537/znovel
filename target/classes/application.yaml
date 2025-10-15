@@ -14,7 +14,7 @@ spring:
       write-numbers-as-strings: true
   servlet:
     multipart:
-      # 上传文件最大大小
+      # 上传文件最大大小book_category
       max-file-size: 5MB
   # 启用虚拟线程
   threads:
@@ -42,11 +42,14 @@ server:
 spring:
   ai:
     openai:
-      api-key: sk-rrrupturhdofbiqzjutduuiceecpvfqlnvmgcyiaipbdikoi
-      base-url: https://api.siliconflow.cn
+      base-url: https://api.deepseek.com
+      api-key: sk-9013610a7e6b440e9e9e67a8464c5949
       chat:
         options:
-          model: deepseek-ai/DeepSeek-R1-Distill-Llama-8B
+          model: deepseek-chat
+          # 添加以下DeepSeek专用参数
+
+
 
 
 
@@ -68,7 +71,7 @@ spring:
   data:
     # Redis 配置
     redis:
-      host: 127.0.0.1
+      host: localhost
       port: 6379
       password: 123456
 
@@ -269,10 +272,14 @@ spring:
     activate:
       on-profile: prod
   data:
-    # Redis 配置
-    redis:
-      host: 127.0.0.1
-      port: 6379
-      password:
+#    # Redis 配置
+#    redis:
+#      host: localhost
+#      port: 6379
+#      password: 123456
+     redis:
+       host: localhost
+       port: 6379
+       password: 123456
 
 

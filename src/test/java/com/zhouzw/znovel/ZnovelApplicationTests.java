@@ -12,4 +12,8 @@ class ZnovelApplicationTests {
         System.out.println(ApiRouterConsts.API_FRONT_USER_URL_PREFIX);
     }
 
+    @Test
+    void test2() {
+        System.out.println("你好");
+    }
 }

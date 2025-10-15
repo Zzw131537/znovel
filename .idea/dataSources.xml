@@ -13,13 +13,11 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="0@127.0.0.1" uuid="9daab484-5f16-4bb6-8395-744914f2f17b">
+    <data-source source="LOCAL" name="0@localhost" uuid="9c35070d-5ab4-4e1a-aefa-994cbcdbebb2">
       <driver-ref>redis</driver-ref>
       <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/src/main/resources/application.yaml</remarks>
       <jdbc-driver>jdbc.RedisDriver</jdbc-driver>
-      <jdbc-url>jdbc:redis://127.0.0.1:6379/0</jdbc-url>
+      <jdbc-url>jdbc:redis://localhost:6379/0</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
